@@ -1,0 +1,314 @@
+---
+title: "Problem Set 3"
+author: "Prasanna Parasurama"
+date: 'Due: 3/15/19'
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+\newcommand{\E}[1]{\ensuremath{\mathbb{E}\big[#1\big]}}
+\newcommand{\Emeasure}[2]{\ensuremath{\mathbb{E}_{#1}\big[#2\big]}}
+
+```{r, message=FALSE, warning=FALSE}
+library(lme4)
+library(bayesm)
+library(ggplot2)
+library(dplyr)
+library(estimatr)
+library(reshape2)
+```
+
+## Problem 1 (Coding Exercise)
+
+For this exercise, you will be working with a dataset provided by an R package. Many R packages have standardized datasets that allow you to test code. The specific dataset you will be working with is the "sleepstudy" dataset available from the "lme4" package. When you load the "lme4" package, the dataframe "sleepstudy" will be available for you to use. 
+
+The dataset contains results from a sleep study experiment. 18 subjects were deprived of sleep over 9 days, and given reaction time tests on each day. The columns are as follows:
+
+\begin{itemize}
+  \item[] \textbf{Reaction} : reaction time (in seconds) 
+  \item[] \textbf{Days} : number of days with sleep deprivate (0 is no sleep deprivation)
+  \item[] \textbf{Subject} : unique subject identifier
+\end{itemize}
+Before doing any regression analysis, it's always a good idea to get a feel for the data. 
+
+a. Plot the mean reaction time as the number of sleep deprivation days increase. What do you see?
+  
+```{r}
+sleepstudy %>% 
+  group_by(Days) %>% 
+  summarise(mean_reaction_time = mean(Reaction)) %>% 
+  plot()
+```
+
+As we would expect, average reaction time increases as sleep deprivation days increase. 
+
+At first, we think that the following model is the correct model to explain the impact of sleep deprivation on reaction times:
+
+\begin{align*}
+  r_{it} = \mu + \beta s_{it} + \epsilon_{it} 
+\end{align*}
+where,
+\begin{itemize}
+  \item[--] $r_{it}$ is reaction time of subject $i$ on day $t$
+  \item[--] $s_{it}$ is the number of days without sleep deprivation for subject $i$ on day $t$
+\end{itemize}
+
+R has two ways for us to do these simple regressions: (1) using the plot functions or (2) using the regression functions.
+
+b. Using ggplot and the "stat\_smooth" option, plot a scatter plot with an ols line from the above model.}
+```{r}
+ggplot(data=sleepstudy, aes(x = Days, y=Reaction)) + 
+  geom_point() + 
+  stat_smooth(method="lm")
+```
+
+c. Using the 'lm\_robust' function, run the above regression. Remake the same plot.
+```{r}
+base_model = lm_robust(Reaction ~ Days, data=sleepstudy)
+attach(sleepstudy)
+plot(Days, Reaction)
+abline(base_model)
+```
+
+
+d. One issue with the above procedure is it assumes a constant slope $\beta$ for all subjects. Run a seperate ols regression for each individual, and make a histogram of the estimates. What do you see?
+```{r}
+random_coefs = lmList(Reaction~Days | Subject, data=sleepstudy)
+
+ggplot(coef(random_coefs), aes(x=Days)) + 
+  geom_histogram()
+```
+
+Note that the estimates vary quite a bit across subjects. 
+
+To address the issues with differing responsiveness to sleep deprivation, we instead decide to estimate the following random-slope model:
+
+\begin{align*}
+  r_{it} &= \mu + \beta s_{it} + \beta_{i} s_{it} + \epsilon_{it} \\
+  \beta_{i} &\sim N(0,\sigma^{2}_{\beta}) \\
+  \epsilon_{i,t} &\sim N(0,\sigma^{2}_{\epsilon}) \\
+  \beta_{i} &\perp \epsilon_{i,t} 
+\end{align*}
+
+e. You have seen this model before, what type of model is it?
+Random slopes model. 
+
+f. What is the covariance matrix of the random-slope model? Compare it to the covariance matrix of the previous model? What has changed?
+
+In the random-slopes model, the covariance matrix of $\beta$ will be $\sigma^{2}_{\beta}I$. This comes directly from $\beta_{i} \sim N(0,\sigma^{2}_{\beta})$
+
+The model from part d, makes no assumption about $\beta_i$ coming from the same distribution. So the covariance matrix doesn't have to be diagonal.
+
+g. One useful statistic people calculate when trying to determine if the random-slope model is correct is the intraclass correlation coefficient, $ICC$, defined as:
+\begin{align*}
+  ICC = \frac{Var(\beta_{i})}{Var(\beta_{i}) + Var(\epsilon_{ij})}
+\end{align*}
+Why is this a good measure to think about whether the above model is the correct model? Estimate the ICC for this data, interpret your results.
+(Note: What are unbiased estimates for each of the components? Try using the law of total variance on the sum of squared errors.)}
+
+ICC tells us the fraction of variance explained by variance in the random slopes. If there is no variance in slopes, then ICC would be 0, so a simple fixed/random effects model would do. 
+
+To estimate the above model, there are two different approaches that one can take: (1) using Maximum likelihood or (2) using Bayesian methods. Lucky for us, there are R packages for both of them. 
+
+## Maximum Likelihood Approach
+
+h. Run a seperate ols regression for each individual, plot the resulting ols estimates across subjects (pick 5 subjects). What do you see?
+```{r}
+random_coefs
+```
+
+```{r}
+ggplot(data=sleepstudy %>% filter(Subject %in% c(308,309,310,330,331)), aes(y=Reaction, x=Days, color=Subject)) + geom_smooth(method="lm", fill=NA)
+```
+
+
+
+i. In part (d), we had you run an individual-by-individual ols regression. Why is this not the best estimation strategy?
+
+In individual-by-individual OLS regression, the individual slopes could be picking up too much individual idiosyncratic differences/outliers.  
+
+There may be some variance across individuals, but we know sleep affects reaction time in more or less the same way across individuals.
+
+j. Using the lme4 package, run the regression in the model specified above. Plot the resulting unit-level regression lines for 5 subjects, how do they compare to the individual-by-individual ols regressions?
+
+```{r}
+random_slopes = coef(lmer(Reaction ~ Days + (-1+Days|Subject), sleepstudy))
+```
+
+```{r}
+estimates = head(random_slopes$Subject,5)
+
+ggplot(data=sleepstudy, aes(x=Days, y=Reaction)) + 
+  geom_blank() + 
+  geom_abline(data=estimates, aes(intercept=`(Intercept)`, slope=Days))
+```
+
+They all have the same intercept. 
+
+The **lme4** package is maximizing a likelihood function, an alternative approach would be to use a bayesian method. The next part of this exercise asks you to understand these differences and run a bayesian method. In order for this model to be bayesian, we now write down the following model:
+
+## Bayesian Approach
+
+To help you better understand the main package you will be using, I have provided an example code in the code folder: bayesm\_example.R.
+\newline
+\newline
+Consider the following model:
+
+\begin{align*}
+  r_{it} &= \mu_{i} + \bar{\beta}_{i}s_{it} + \epsilon_{ij} \\
+  \bar{\mu}_{i} &= \mu + \mu_{i} \\
+  \bar{\beta}_{i} &= \beta + \beta_{i} \\
+  \begin{bmatrix} \mu_{i} 
+               \\ \beta_{i} 
+  \end{bmatrix} &\sim N(0,\sigma^{2}_{\beta}) \\
+  \sigma^{2}_{\beta} &\sim IW(v_{0},V_{0}) 
+\end{align*}
+
+where,
+\begin{itemize}
+  \item[] IW is an inverse-wishart distribution (a common prior distribution used)
+\end{itemize}
+\vspace{0.3cm}
+
+k. What is} $\beta$ {in the model above? In words, no calculations are needed.
+$\beta$ is the group mean. 
+
+i. What differs in this model from the previous model we estimated?
+Both the intercept and slope are random for an individual. In the previous model, all the individuals had the same intercept.
+
+Using the rhierLinearModel function from bayesm (do not change the default settings except the number of MCMC draws), run an MCMC algorithm to estimate the model above, with 2000 draws. Do the following:
+```{r}
+# Get subjects
+subjects=levels(sleepstudy$Subject)
+n_subjects = length(subjects)
+
+# Create matrix of potential covariates for our random effect
+# Setting to 1 because our model assumes that there is a common mean across groups
+Z=matrix(c(rep(1,n_subjects)), ncol=1)
+nz=ncol(Z)
+
+regdata=NULL    #<- This will be a named list to store the data
+                # Each element of the list is the observations (both IV and DV) for each i
+for(s in subjects){
+  y = (sleepstudy %>% filter(Subject == s))$Reaction        # Create LHS variable
+  X=cbind(1, (sleepstudy %>% filter(Subject == s))$Days)  # Create constant + RHS variables
+  regdata[[which(subjects==s)]] = list(y=y,X=X)                                # For each unit i, add their observations to list regdata
+}
+
+# Create data for MCMC
+Data=list(regdata=regdata,Z=Z)
+Mcmc=list(R=2000,keep=1)
+
+# Run linear hierarchical model
+out=rhierLinearModel(Data=Data,Mcmc=Mcmc)
+
+```
+
+m1. Plot the last 500 MCMC draws (these are the betadraw variables) for the slope term for 5 of the subjects, does it seem to converge?
+
+```{r}
+last_500_draws = melt(out$betadraw[1:5,2,1501:2000], value.names = "Slope", varnames =  c("Subject", "Draw"))
+
+ggplot(last_500_draws, aes(x=Draw, y=value, color=Subject)) + geom_line()
+```
+No, the slopes don't seem to converge. 
+
+m2. Using the last draw from the MCMC draws, plot the new unit-level regression line for 5 subjects, i.e. make a scatterplot of the data and plot a regression line using both the new slope and intercept terms $(\mu_{i},\beta_{i})$
+(Note: If your model output is stored in the variable, mcmc, then you can get the last draw using the following mcmc\$betadraws[,,-1])}.
+
+```{r}
+last_draw = data.frame(out$betadraw[1:5,1:2,2000])
+ggplot(data=sleepstudy %>% filter(Subject %in% c(308,309,310,330,331))) + 
+  geom_point(aes(x=Days, y=Reaction, color=Subject)) +
+  geom_abline(data=last_draw, aes(intercept=X1, slope=X2))
+```
+
+
+## Problem 2 (Coding Exercise)
+
+The goal of this exercise is to predict the average height of a randomly selected person from the population. We have provided a dataset 'height.csv' dataframe with heights for men and women in the population. For now, assume that height, $X_{i}$ for each individual $i$, is distributed as $X_{i} \sim N(\mu,\sigma^{2})$. 
+
+a. Recast this problem as a regression problem and estimate $\mu$.
+
+$$X_i = \alpha + \epsilon_i$$
+$$\epsilon \sim N(0, \sigma^2)$$
+```{r}
+heights = read.csv("data/height.csv")
+
+height_reg = lm(Height ~ 1, data=heights)
+summary(height_reg)
+```
+
+$\hat{\mu}=\alpha=66.35$.
+
+b. Going back to the data, plot histograms for the overall population, and then for men and women seperately. What do you notice?
+
+
+```{r}
+ggplot(heights, aes(x=Height)) + geom_histogram(position="identity", alpha=0.5)
+ggplot(heights, aes(x=Height, fill=Gender, color=Gender)) + geom_histogram(position="identity", alpha=0.5)
+```
+
+It looks like male and female heights come from two different distributions. 
+
+Given the answer to part (b), one way to think about this problem is that we have some proportion of men and women in the population $(\omega_{m},\omega_{w})$ and the height of individual $i$ depends on which subpopulation the person comes from. This new model is:
+
+\begin{align*}
+  X_{i} &= \omega_{w}X_{w} + (1-\omega_{w})X_{m} \\
+  X_{w} &\sim N(\mu_{w},\sigma^{2}_{w}) \\
+  X_{m} &\sim N(\mu_{m},\sigma^{2}_{m}) \\
+  \omega_{w} &\in [0,1] 
+\end{align*}
+
+This is a hard estimation problem to code up (see Expectation Maximization), but luckily for us we can use `bayesm' again. 
+
+Once again, recast this problem in a regression framework. \newline
+(Hint: What is the mean and variance of $X_{i}$?)}
+
+$$X_i = \alpha + \beta Male_i + \epsilon_i$$
+$$\epsilon \sim N(0, Var(X))$$
+where, $Var(X) = \omega^2 \sigma_w^2 + (1-\omega)\sigma_m^2$
+
+d. Using your answer to the last part, justify running a linear hierarchical mixture model regression. Use \textbf{rhierLinearMixture} to run this model. \newline
+(Note: \textbf{ncomp} option specifies the number of mixture components)}
+
+We can think of $Male_i \sim Bernoulli(\omega)$.
+
+```{r}
+subjects=levels(heights$Gender)
+n_subjects = length(subjects)
+
+# Create matrix of potential covariates for our random effect
+# Setting to 1 because our model assumes that there is a common mean across groups
+Z=matrix(c(rep(0,n_subjects)), ncol=1)
+nz=ncol(Z)
+
+regdata=NULL    #<- This will be a named list to store the data
+                # Each element of the list is the observations (both IV and DV) for each i
+for(s in subjects){
+  y = (heights %>% filter(Gender == s))$Height        # Create LHS variable
+  X = matrix(c(rep(1,length(y))))
+  regdata[[which(subjects==s)]] = list(y=y,X=X)                                # For each unit i, add their observations to list regdata
+}
+
+# Create data for MCMC
+Data=list(regdata=regdata,Z=Z)
+Mcmc=list(R=2000,keep=1)
+
+# Run linear hierarchical model
+out=rhierLinearMixture(Data=Data,Mcmc=Mcmc,Prior = list(ncomp=2))
+
+```
+
+
+e. Using the last MCMC draw, plot a histogram of the beta estimates for men and women observations seperately. What do you notice about these new distributions?
+```{r}
+ggplot(melt(out$betadraw[,,]), aes(x=value, color=Var1)) + geom_histogram(position="identity", alpha=0.5, bins=100)
+```
+
+The distributions are well seperated. 
