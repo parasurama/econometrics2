@@ -1,0 +1,225 @@
+---
+title: "Problem Set 4"
+author: "Prasanna Parasurama"
+date: 'Due: 3/29/19'
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+\newcommand{\E}[1]{\ensuremath{\mathbb{E}\big[#1\big]}}
+\newcommand{\Emeasure}[2]{\ensuremath{\mathbb{E}_{#1}\big[#2\big]}}
+
+## Packages to Install
+
+
+**The packages used this week are**
+
+* estimatr (Tidyverse version of lm function)
+* plm (Panel Data package)
+
+## Problem 1 (Analytical Exercise)
+
+Assume we have the following dynamic panel model:
+
+\begin{align*}
+	y_{i,t} = \gamma y_{i,t-1} + \alpha_{i} + \epsilon_{i,t} \mbox{,   }
+\end{align*}
+
+We have the following assumptions:
+
+\begin{align*}
+	\vert \gamma \vert &< 1 \\
+	y_{i,0} &\mbox{  is known (i.e. non-random)} \\
+	\mathbb{E}_{T}[\epsilon_{i,t} \vert y_{i,t-1},...,y_{i,0},\alpha_{i}] &= 0 \mbox{ (Sequential Exogeneity)} 
+\end{align*}
+
+Our goal is to consistently estimate $\gamma$. 
+
+1. Show that the first-difference estimator of $\gamma$ is unbiased if $\alpha_{i} = 0$.
+	(Hint: To show unbiased, show that the $\mathbb{E}[\hat{\gamma_{i}}] = \gamma{i}$.)
+	
+(Note: Since, $\epsilon_{i,t} \perp y_{i, t-1}$ (from exogenity assumption), when $\alpha = 0$, simple OLS estimator will be unbiased.)
+
+Least Squares First-difference estimator is:
+
+$$\hat{\gamma}_{FD} = \gamma + (\Delta y'_{i,t-1}\Delta y_{i,t-1})^{-1} (\Delta y'_{i,t-1}\Delta \epsilon_{i,t})$$
+
+We need to show $(\Delta y'_{i,t-1}\Delta \epsilon_{i,t}) = 0$
+
+$$(\Delta y'_{i,t-1}\Delta \epsilon_{i,t}) = (y_{i,t-1} - y_{i,t-2})' (\epsilon_{i,t} - \epsilon_{i,t-1})$$ 
+\begin{align*}
+\E{\E{(y_{i,t-1} - y_{i,t-2})' (\epsilon_{i,t} - \epsilon_{i,t-1}) | y_{t-1}...y_0}} =E[\E{y_{i,t-1}\epsilon_{i,t}|y_{t-1}...y_0} &+ \\
+\E{y_{i,t-2}\epsilon_{i,t}|y_{t-1}...y_0} &+ \\
+\E{y_{i,t-1}\epsilon_{i,t-1}|y_{t-1}...y_0} &+ \\
+\E{y_{i,t-2}\epsilon_{i,t-1}|y_{t-1}...y_0}]
+\end{align*}
+
+Note that all the terms are 0 due to the sequential exogenity assumption. 
+$$\E{y_{i,t-1}\epsilon_{i,t}|y_{t-1}...y_0} = \E{y_{i,t-1}}\E{\epsilon_{i,t}|y_{t-1}...y_0} = 0$$
+$$\E{y_{i,t-2}\epsilon_{i,t}|y_{t-2}...y_0} = \E{y_{i,t-2}}\E{\epsilon_{i,t}|y_{t-1}...y_0} = 0$$
+$$\E{y_{i,t-1}\epsilon_{i,t-1}|y_{t-1}...y_0} = \E{y_{i,t-1}\E{\epsilon_{i,t-1}|y_{t-1}...y_0}} = 0$$
+$$\E{y_{i,t-2}\epsilon_{i,t-1}|y_{t-2}...y_0} = \E{y_{i,t-2}}\E{\epsilon_{i,t-1}|y_{t-1}...y_0} = 0$$
+
+Hence, $\E{\hat{\gamma}_{FD}} = \gamma$
+
+2. Is the first difference estimator of $\gamma$ still unbiased if $\alpha_{i} \neq 0$? 
+	(Hint: Try showing that $cov(\epsilon_{i,t},y_{i,t+1})\neq0$. Why is this condition useful?)
+
+NO, We can follow the same exercise as (1), but the individual terms are not 0. For example, 
+$$\E{\epsilon_{i,t}|y_{t-1}...y_0} \neq 0$$
+
+It is only 0 when $\alpha$ is known to satisfy the seq exogenity assumption. 
+
+$${E}_{T}[\epsilon_{i,t} \vert y_{i,t-1},...,y_{i,0},\alpha_{i}] = 0 $$
+
+3. Let $\Delta y_{i,t} = y_{i,t} - y_{i,t-1}$, what is $cov(\Delta \epsilon_{i,t}, y_{i,t-2})$? What is $cov(\Delta y_{i,t}, y_{i,t-2})$? 
+
+$$Cov(\Delta \epsilon_{i,t}, y_{i,t-2}) = \E{\Delta \epsilon_{i,t}y_{i,t-2}} - \E{\Delta \epsilon_{i,t}}\E{y_{i,t-2}}$$
+
+By the seq exogenity assumption, $\Delta \epsilon_{i,t} \perp y_{i,t-2}$, which implies:
+$$\E{\Delta \epsilon_{i,t}y_{i,t-2}} = \E{\Delta \epsilon_{i,t}}\E{y_{i,t-2}}$$
+$$Cov(\Delta \epsilon_{i,t}, y_{i,t-2})  = \E{\Delta \epsilon_{i,t}}\E{y_{i,t-2}} - \E{\Delta \epsilon_{i,t}}\E{y_{i,t-2}} = 0$$
+
+Similarly: 
+$$cov(\Delta y_{i,t}, y_{i,t-2}) = cov((y_{i,t}y_{i,t-1}), y_{i,t-2})$$
+$y_{i,t-1} and y_{i,t-2}$ are clearly correlated (if $\gamma \neq 0$) my model construction, so:
+$$cov(\Delta y_{i,t}, y_{i,t-2}) \neq 0$$ 
+
+4. Using your answer from part (4), propose a strategy to consistently estimate $\gamma$?
+	(Hint: The estimator will be a 2SLS (or IV regression).)
+	
+As seen above, $y_{i,t-2}$ satisfies both the relevance assumption ($cov(\Delta y_{i,t}, y_{i,t-2}) \neq 0$) and the exclusion restriction assumption($Cov(\Delta \epsilon_{i,t}, y_{i,t-2}) = 0$). So, $y_{i,t-2}$ can be used as an IV to estimate $\gamma$. 
+
+## Problem 2 (Coding Exercise)
+
+For this exercise we will be using data on cigarette sales available in the __plm__ package. To load this dataset, simply use the following command: 
+
+```{r, message=FALSE, warning=FALSE, comment=''}
+library(plm)
+library(estimatr)
+library(dplyr)
+library(AER)
+data(Cigar,package="plm")
+```
+
+The data has the following columns:
+
+\begin{itemize}
+  \item[--] \textbf{sales} -- cigarette sales in packs per capita
+  \item[--] \textbf{pimin} -- minimum price in adjoining states per pack of cigarettes
+  \item[--] \textbf{ndi} -- per capita disposable income
+  \item[--] \textbf{cpi} -- consumer price index (1983=100)
+  \item[--] \textbf{pop16} -- population above the age of 16
+  \item[--] \textbf{pop} -- population
+  \item[--] \textbf{price} -- price per page of cigarettes
+  \item[--] \textbf{year} -- the year
+  \item[--] \textbf{state} -- number for the state
+\end{itemize}
+
+We will be estimating a series of panel models trying to estimate the price elasticity of demand. 
+
+1. The price elasticity of cigarette demand, $E_{d}$ is the percentage change of sales of cigarettes divided by the percentage change of price of cigarettes. Let $S_{t}$ be sales of cigarettes at time $t$ and $p_{t}$ be price of cigarettes at time $t$, then the price elasticity of demand is:
+
+\begin{align*}
+  E_{d} = \frac{\Delta S_{t}/S_{t}}{\Delta p_{t}/p_{t}}
+\end{align*}
+
+To estimate price elasticities in a linear regression, turn sales and price into logs. Why do we do this?
+
+
+In a linear regression, logs captures the % change; the coefficients can be easily interpreted as elasticities. 
+```{r}
+df = Cigar
+df = mutate(df, log_sales=log(sales), log_price=log(price))
+```
+
+2. Assume that we are estimating the following cross-sectional regression:
+
+\begin{align*}
+  log(S_{i,t}) = \gamma + \beta log(p_{i,t}) + \alpha_{1} ndi_{i,t} + \alpha_{2} cpi_{i,t} + \alpha_{3} pop16_{i,t} + \epsilon_{i,t} 
+\end{align*}
+
+Estimate this regression, reporting the price elasticity of demand? What is potentially wrong with this regression?
+
+```{r}
+base_model = lm(log_sales~log_price+ndi+cpi+pop16, data=df)
+summary(base_model)
+```
+Price elasticity is -0.836. 
+
+Few problems with this regression:
+- Price and sales are jointly determined, so elasticity is likely to be biased (simultaneity bias).
+- Heterogenity across state, year etc
+
+3. One important issue could be heterogeneity in sales across states, $\gamma$ varies across states. However, we may not know whether we want to model this as a fixed effect or a random effect. One test often used is the Hausman-Wu test, available as phtest in the plm package. Estimate a within estimator, a random effect estimator and then use a Hausman-Wu test to report which specification is the correct one. Be sure to understand what the null and alternative hypothesis of this test are in order to report the correct interpretation of the test.
+
+Random Effects:
+
+```{r}
+state_random_effects = plm(log_sales~log_price+ndi+cpi+pop16, data=df, index=c("state"), model="random", effect="individual")
+summary(state_random_effects)
+```
+
+Fixed Effects:
+```{r}
+state_fixed_effects = plm(log_sales~log_price+ndi+cpi+pop16, data=df, index=c("state"), model="within", effect="individual")
+summary(state_fixed_effects)
+```
+
+Hausman-Wu Test:
+
+```{r}
+phtest(state_random_effects, state_fixed_effects)
+```
+
+Null hypothesis is that both models are same, which can be rejected here. 
+
+4. We begin to believe that not only heterogeneity in mean sales, but dynamics are important, so we decide to estimate the following model:
+
+\begin{align*}
+  log(S_{i,t}) = \gamma_{i} + \tau log(S_{i,t-1}) + \beta log(p_{i,t}) + \alpha_{1} ndi_{i,t} + \alpha_{2} cpi_{i,t} + \alpha_{3} pop16_{i,t} + \epsilon_{i,t} 
+\end{align*}
+
+We are first going to have you implement the Anderson-Hsiao estimator:
+
+5. Create a vector of first differences for each term in the regression above. 
+```{r}
+df = df %>% group_by(state) %>% mutate(log_sales_lag = lag(log_sales),
+                                       log_sales_lag2 = lag(log_sales, 2),
+                                       log_price_lag = lag(log_price), 
+                                       ndi_lag = lag(ndi),
+                                       cpi_lag = lag(cpi), 
+                                       pop16_lag = lag(pop16))
+
+df = df %>% mutate(sales_fd = log_sales - log_sales_lag,
+                   sales_fd2 = log_sales_lag - log_sales_lag2,
+                   price_fd = log_price - log_price_lag,
+                   ndi_fd = ndi - ndi_lag,
+                   cpi_fd = cpi - cpi_lag,
+                   pop16_fd = pop16 - pop16_lag)
+
+```
+
+6. Let $\Delta S_{i,t} = log(S_{i,t}) - log(S_{i,t-1})$, we will be running the following two-stage least squares regression. In your first stage, use $log(S_{i,t-1})$ as an instrument for $\Delta S_{i,t}$, then run a 2SLS to get a new estimate for the price elasticity. Report any differences.
+```{r}
+ah_model = ivreg(sales_fd ~ sales_fd2 + price_fd + ndi_fd + cpi_fd + pop16_fd | log_sales_lag2 + log_price_lag + ndi_lag + cpi_lag + pop16_lag, data=df)
+summary(ah_model)
+```
+
+Elasticity for FE was -0.4, with lag it's -0.5.
+
+An issue with the Anderson-Hsiao estimator is that it is not efficient because it does not use all available information. The reason is quite simple, if $log(S_{i,t-1})$ is a valid instrument for $\Delta S_{i,t}$ and $log(S_{i,t-1})$ depends on $log(S_{i,t-2})$ then $log(S_{i,t-2})$ is also a valid instrument for $\Delta S_{i,t}$. This idea is the logic underpinning the Arellano-Bond estimator. This estimator is quite hard to code up, but luckily plm includes this estimator as the pgmm function.
+
+7. Using a generalized method of moments estimator (Arellano-Bond), re-estimate the model. Report any differences.   
+```{r error=TRUE}
+ab_model = pgmm(sales_fd ~ sales_fd2 + price_fd + ndi_fd + cpi_fd + pop16_fd | lag(log_sales, 2:3), data=df, effect="twoways", model="twosteps")
+
+```
+
+
+
