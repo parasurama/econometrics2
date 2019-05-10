@@ -1,0 +1,1175 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[10pt,notitlepage,onecolumn,aps,pra]{revtex4-1}
+
+    
+    
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+% Set max figure width to be 80% of text width, for now hardcoded.
+\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+% Ensure that by default, figures have no caption (until we provide a
+% proper Figure object with a Caption API and a way to capture that
+% in the conversion process - todo).
+\usepackage{caption}
+\DeclareCaptionLabelFormat{nolabel}{}
+\captionsetup{labelformat=nolabel}
+
+\usepackage{adjustbox} % Used to constrain images to a maximum size
+\usepackage{xcolor} % Allow colors to be defined
+\usepackage{enumerate} % Needed for markdown enumerations to work
+\usepackage{geometry} % Used to adjust the document margins
+\usepackage{amsmath} % Equations
+\usepackage{amssymb} % Equations
+\usepackage{textcomp} % defines textquotesingle
+% Hack from http://tex.stackexchange.com/a/47451/13684:
+\AtBeginDocument{%
+    \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+}
+\usepackage{upquote} % Upright quotes for verbatim code
+\usepackage{eurosym} % defines \euro
+\usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+\usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+\usepackage{fancyvrb} % verbatim replacement that allows latex
+\usepackage{grffile} % extends the file name processing of package graphics
+                     % to support a larger range
+% The hyperref package gives us a pdf with properly built
+% internal navigation ('pdf bookmarks' for the table of contents,
+% internal cross-reference links, web links for URLs, etc.)
+\usepackage{hyperref}
+\usepackage{booktabs}  % table support for pandoc > 1.12.2
+\usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+\usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                            % normalem makes italics be italics, not underlines
+\usepackage{braket}
+
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \title{Problem Set 6}\author{Prasanna Parasurama}
+
+\date{\today}
+\maketitle
+
+
+    
+    
+
+    
+    \section{Problem 1}\label{problem-1}
+
+    This exercise asks you to implement and assess the performance of the
+bootstrap for the linear regression model. Suppose you have the linear
+regression model:
+
+\begin{align*}
+  y_{i} = \beta_{0} + \beta_{1}x_{i} + \epsilon_{i}
+\end{align*}
+
+where,
+
+\begin{itemize}
+  \item[-] $x_{i} \sim U[0,2]$
+  \item[-] $\epsilon_{i} \vert x_{i} \sim U[-1,1]$
+  \item[-] $\beta_{0} = \beta_{1} = 1$ 
+\end{itemize}
+
+We ask you to answer the following questions:
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Write a code that generates i.i.d. samples of sizes \(n=10,50,200\)
+  from that distribution, computes (1) the least squares estimator for
+  \(\beta\), (2) the t-ratio for the least squares coefficient
+  \(\beta_{1}\),
+  \(t_{n} = \frac{\hat{\beta}_{1,LS} - 1}{\hat{s.e.}(\hat{\beta}_{1,LS})}\),
+  and (3) the least square residuals
+  \(\hat{\epsilon}_{i} = y_{i} - \hat{\beta}_{0,LS} - \hat{\beta}_{1,LS} x_{i}\)
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{api} \PY{k}{as} \PY{n+nn}{sm}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{from} \PY{n+nn}{datetime} \PY{k}{import} \PY{n}{datetime}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{class} \PY{n+nc}{BootstrapSimulator}\PY{p}{:}
+            \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n} \PY{o}{=} \PY{n}{n}  \PY{c+c1}{\PYZsh{} sample size}
+        
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+        
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ols} \PY{o}{=} \PY{k+kc}{None}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b0\PYZus{}ols} \PY{o}{=} \PY{k+kc}{None}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols} \PY{o}{=} \PY{k+kc}{None}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{t\PYZus{}ols} \PY{o}{=} \PY{k+kc}{None}
+        
+            \PY{k}{def} \PY{n+nf}{draw\PYZus{}samples}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                \PY{n}{n} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}
+        
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+                \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}
+        
+            \PY{n+nd}{@staticmethod}
+            \PY{k}{def} \PY{n+nf}{get\PYZus{}ols\PYZus{}params}\PY{p}{(}\PY{n}{fitted\PYZus{}model}\PY{p}{)}\PY{p}{:}
+                \PY{n}{b\PYZus{}hat} \PY{o}{=} \PY{n}{fitted\PYZus{}model}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                \PY{n}{b\PYZus{}se} \PY{o}{=} \PY{n}{fitted\PYZus{}model}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                \PY{n}{t} \PY{o}{=} \PY{p}{(}\PY{n}{b\PYZus{}hat} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{n}{b\PYZus{}se}
+                \PY{k}{return} \PY{n}{b\PYZus{}hat}\PY{p}{,} \PY{n}{t}
+        
+            \PY{k}{def} \PY{n+nf}{fit\PYZus{}ols}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+                \PY{c+c1}{\PYZsh{} fit model}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ols} \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{OLS}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{n}{y}\PY{p}{]}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{p}{)}
+        
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{t\PYZus{}ols} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}ols\PYZus{}params}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ols}\PY{p}{)}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b0\PYZus{}ols} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        
+                \PY{c+c1}{\PYZsh{} residuals}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e\PYZus{}hat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{n}{y}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b0\PYZus{}ols} \PY{o}{\PYZhy{}} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        
+                \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{t\PYZus{}ols}
+        
+            \PY{k}{def} \PY{n+nf}{sample\PYZus{}residuals}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{)}
+                \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e\PYZus{}hat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{replace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        
+            \PY{n+nd}{@staticmethod}
+            \PY{k}{def} \PY{n+nf}{get\PYZus{}bootstrap\PYZus{}stats}\PY{p}{(}\PY{n}{params}\PY{p}{)}\PY{p}{:}
+                \PY{k}{return} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ci}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{l+m+mf}{2.5}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+                        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{params}\PY{p}{)}\PY{p}{\PYZcb{}}
+        
+            \PY{k}{def} \PY{n+nf}{residual\PYZus{}bootstrap}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{n\PYZus{}reps}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{:}
+        
+                \PY{n}{b\PYZus{}bootstrap} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+                \PY{n}{t\PYZus{}bootstrap} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+        
+                \PY{n}{stats} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+        
+                \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}reps}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{e\PYZus{}bootstrap} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{sample\PYZus{}residuals}\PY{p}{(}\PY{p}{)}
+                    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y\PYZus{}bootstrap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b0\PYZus{}ols} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}
+        \PY{n}{e\PYZus{}bootstrap}
+                    \PY{n}{ols} \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{OLS}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y\PYZus{}bootstrap}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{p}{)}
+                    \PY{n}{b}\PY{p}{,} \PY{n}{t} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}ols\PYZus{}params}\PY{p}{(}\PY{n}{ols}\PY{p}{)}
+                    \PY{n}{b\PYZus{}bootstrap}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+                    \PY{n}{t\PYZus{}bootstrap}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+        
+                \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}bootstrap\PYZus{}stats}\PY{p}{(}\PY{n}{b\PYZus{}bootstrap}\PY{p}{)}
+                \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}bootstrap\PYZus{}stats}\PY{p}{(}\PY{n}{t\PYZus{}bootstrap}\PY{p}{)}
+        
+                \PY{k}{return} \PY{n}{stats}
+        
+            \PY{k}{def} \PY{n+nf}{parametric\PYZus{}bootstrap}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{n\PYZus{}reps}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{:}
+                \PY{n}{b\PYZus{}bootstrap} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+                \PY{n}{t\PYZus{}bootstrap} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+        
+                \PY{n}{stats} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+        
+                \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}reps}\PY{p}{)}\PY{p}{:}
+                    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{n}\PY{p}{)}
+                    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b0\PYZus{}ols} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{b1\PYZus{}ols} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{e}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+                    \PY{n}{ols} \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{OLS}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{p}{)}
+        
+                    \PY{n}{b}\PY{p}{,} \PY{n}{t} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}ols\PYZus{}params}\PY{p}{(}\PY{n}{ols}\PY{p}{)}
+                    \PY{n}{b\PYZus{}bootstrap}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{b}\PY{p}{)}
+                    \PY{n}{t\PYZus{}bootstrap}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{t}\PY{p}{)}
+                \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}bootstrap\PYZus{}stats}\PY{p}{(}\PY{n}{b\PYZus{}bootstrap}\PY{p}{)}
+                \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}bootstrap\PYZus{}stats}\PY{p}{(}\PY{n}{t\PYZus{}bootstrap}\PY{p}{)}
+        
+                \PY{k}{return} \PY{n}{stats}
+\end{Verbatim}
+
+    See \texttt{draw\_samples} and \texttt{fit\_ols} methods.
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Write a code for drawing \(n\) times at random from the discrete
+  uniform distribution over the estimated residuals
+  \(\hat{\epsilon}_{1},...,\hat{\epsilon}_{n}\) (i.e. with replacement).
+\end{enumerate}
+
+    See \texttt{sample\_residuals} method in \texttt{BootstrapSimulator}
+class.
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Use your code from parts (a) and (b) to implement the residual
+  bootstrap - assuming that \(\epsilon_{i}\) and \(x_{i}\) are
+  independent - to estimate the 95th percentiles of the respective
+  distributions of \(\hat{\beta}_{1,LS}\) and \(t_{n}\)
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{bs\PYZus{}10} \PY{o}{=} \PY{n}{BootstrapSimulator}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{n}{bs\PYZus{}50} \PY{o}{=} \PY{n}{BootstrapSimulator}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+        \PY{n}{bs\PYZus{}200} \PY{o}{=} \PY{n}{BootstrapSimulator}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}
+        
+        \PY{n}{bs\PYZus{}10}\PY{o}{.}\PY{n}{draw\PYZus{}samples}\PY{p}{(}\PY{p}{)}
+        \PY{n}{bs\PYZus{}10}\PY{o}{.}\PY{n}{fit\PYZus{}ols}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{bs\PYZus{}50}\PY{o}{.}\PY{n}{draw\PYZus{}samples}\PY{p}{(}\PY{p}{)}
+        \PY{n}{bs\PYZus{}50}\PY{o}{.}\PY{n}{fit\PYZus{}ols}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{bs\PYZus{}200}\PY{o}{.}\PY{n}{draw\PYZus{}samples}\PY{p}{(}\PY{p}{)}
+        \PY{n}{bs\PYZus{}200}\PY{o}{.}\PY{n}{fit\PYZus{}ols}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} (0.9850883905439032, -0.19459470136382742)
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{\PYZsh{} Residual bootstrap}
+        \PY{n}{res\PYZus{}10} \PY{o}{=} \PY{n}{bs\PYZus{}10}\PY{o}{.}\PY{n}{residual\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+        \PY{n}{res\PYZus{}50} \PY{o}{=} \PY{n}{bs\PYZus{}50}\PY{o}{.}\PY{n}{residual\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+        \PY{n}{res\PYZus{}200} \PY{o}{=} \PY{n}{bs\PYZus{}200}\PY{o}{.}\PY{n}{residual\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{df\PYZus{}res} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{[}\PY{n}{res\PYZus{}10}\PY{p}{,} \PY{n}{res\PYZus{}50}\PY{p}{,} \PY{n}{res\PYZus{}200}\PY{p}{]}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b estimates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}res}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{)}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t estimates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}res}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b estimates
+                                         ci      mean
+0  (0.1252409779586813, 0.8744245281189442)  0.497854
+1  (0.7564703092768035, 1.3095184865086547)  1.024620
+2  (0.8415242880163574, 1.1121380817466304)  0.975943
+t estimates
+                                           ci      mean
+0  (-4.9693357957442394, -0.5040697930336879) -2.357089
+1    (-1.8305105346400985, 2.240661045221299)  0.177186
+2     (-2.016877673129661, 1.467179807545017) -0.316971
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Repeat part (a) for sample size \(n=10,50,200\) with \(200\)
+  replications, where you keep the initial draws of \(x_{1},..,x_{n}\)
+  from part (a) and only generate new residuals from their conditional
+  distribution. Compute \(\hat{\beta}_{1,LS}\) and the statistic
+  \(t_{n}\) using \(200\) independent samples of size \(n\). Use your
+  results to compute a simulated estimate for the 95th percentiles of
+  the respective sampling distributions for \(\hat{\beta}_{1,LS}\) and
+  \(t_{n}\).
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} parametric bootstrap}
+        \PY{n}{par\PYZus{}10} \PY{o}{=} \PY{n}{bs\PYZus{}10}\PY{o}{.}\PY{n}{parametric\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+        \PY{n}{par\PYZus{}50} \PY{o}{=} \PY{n}{bs\PYZus{}50}\PY{o}{.}\PY{n}{parametric\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+        \PY{n}{par\PYZus{}200} \PY{o}{=} \PY{n}{bs\PYZus{}200}\PY{o}{.}\PY{n}{parametric\PYZus{}bootstrap}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{df\PYZus{}par} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{[}\PY{n}{par\PYZus{}10}\PY{p}{,} \PY{n}{par\PYZus{}50}\PY{p}{,} \PY{n}{par\PYZus{}200}\PY{p}{]}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b estimates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}par}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{)}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t estimates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}par}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b estimates
+                                           ci      mean
+0  (-0.07770851234812026, 1.0908798535407562)  0.481773
+1    (0.7336699250353068, 1.2440893219167681)  1.014423
+2    (0.8299080953533149, 1.1223787253665154)  0.985627
+t estimates
+                                          ci      mean
+0   (-4.249443952035807, 0.3108292477213074) -1.776718
+1  (-2.0759239890186234, 1.7110379456127023)  0.091293
+2  (-2.3983362460727142, 1.6721542243509722) -0.196839
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Compare your results from (c) and (d). What do you conclude about the
+  performance of the bootstrap? How does it compare to the 95th
+  percentile of the asymptotic distribution of \(t_{n}\)?
+\end{enumerate}
+
+    Both residual (c) and parametric (d) bootstrap give similar results for
+\(beta\) estimates. For \(t\) estimates, they are different for n=2, but
+tend to converge for higher n.
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}sim}\PY{p}{,} \PY{n}{stat}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{stat} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{k}{return} \PY{p}{(}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}
+        \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{stat} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+                \PY{k}{return} \PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}}
+        \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{(}\PY{p}{(}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{params}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}}
+        \PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n}{bs\PYZus{}sim}\PY{o}{.}\PY{n}{ols}\PY{o}{.}\PY{n}{bse}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    For, \(\hat{\beta}_1\), note that the bootstrap CI are fairly close to
+asymptotic distribution CI:
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}10}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}50}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}200}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(0.0012296909768160225, 1.0016978646647163)
+(0.7340372030038689, 1.3007819814839865)
+(0.831830266334066, 1.1383465147537404)
+
+    \end{Verbatim}
+
+    To get asymptotic distribution of \(t_n\), we would have to rely on the
+delta method. But since \(\beta_1\) and \(se(beta_1)\) are independent,
+we can do a simple substitution. The bootstrap estimates converge for
+larger n.
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}10}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}50}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{get\PYZus{}asymptotic\PYZus{}ci}\PY{p}{(}\PY{n}{bs\PYZus{}200}\PY{p}{,} \PY{n}{stat}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(-3.9932117194354806, 0.00678828056451893)
+(-1.877125698162645, 2.122874301837354)
+(-2.1945947013638274, 1.8054052986361726)
+
+    \end{Verbatim}
+
+    \section{Problem 2}\label{problem-2}
+
+    This exercise will walk you through a prediction task. I have downloaded
+data from a peer-to-peer lending platform, Lending Club. The dataset you
+will work with is: \textbf{lending\_club\_07\_to\_11\_cleaned.csv}.
+Lending Club provides detailed characteristic information regarding
+loans, both information on the borrower, as well as, the loan itself.
+Your goal will be to build a model to predict the outcome of a loan,
+i.e. whether an individual paid off a loan or did not pay off a loan. In
+our case, a good outcome is if the loan is fully paid off, a bad outcome
+is if the loan is charged off.
+
+The target variable for the analysis is \textbf{loan\_status}, where:
+
+\begin{align*}
+  loan\_status = 
+    \begin{cases}
+      1 \mbox{ if loan is paid off } \\
+      0 \mbox{ if loan is not paid off }
+    \end{cases}
+\end{align*}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         
+         \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data/lending\PYZus{}club\PYZus{}07\PYZus{}to\PYZus{}11\PYZus{}cleaned.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  This is going to be a more DIY style exercise, provide a list of the
+  variables you plan to use for the analysis. Give a short discussion
+  for why you excluded other variables.
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{vars\PYZus{}to\PYZus{}include} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{addr\PYZus{}state}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{annual\PYZus{}inc}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{delinq\PYZus{}2yrs}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dti}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{emp\PYZus{}length}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{funded\PYZus{}amnt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{home\PYZus{}ownership}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inq\PYZus{}last\PYZus{}6mths}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{installment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{int\PYZus{}rate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loan\PYZus{}amnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{open\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pub\PYZus{}rec}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pub\PYZus{}rec\PYZus{}bankruptcies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purpose}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revol\PYZus{}bal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revol\PYZus{}util}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sub\PYZus{}grade}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{term}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}acc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}pymnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}rec\PYZus{}int}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}rec\PYZus{}late\PYZus{}fee}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}rec\PYZus{}prncp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verification\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{zip\PYZus{}code}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{} convert to datetime}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{issue\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{issue\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb}{format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{earliest\PYZus{}cr\PYZus{}line}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{earliest\PYZus{}cr\PYZus{}line}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb}{format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}pymnt\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}pymnt\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb}{format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}credit\PYZus{}pull\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}credit\PYZus{}pull\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n+nb}{format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{b\PYZhy{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{\PYZsh{} create new features}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}first\PYZus{}cr\PYZus{}line}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{issue\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{earliest\PYZus{}cr\PYZus{}line}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda}
+         \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{days}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}last\PYZus{}pymnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{datetime}\PY{o}{.}\PY{n}{today}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}pymnt\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}
+         \PY{n}{x}\PY{o}{.}\PY{n}{days}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}last\PYZus{}cr\PYZus{}pull}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{datetime}\PY{o}{.}\PY{n}{today}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZhy{}}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}credit\PYZus{}pull\PYZus{}d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{days}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{vars\PYZus{}to\PYZus{}include}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}first\PYZus{}cr\PYZus{}line}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}last\PYZus{}pymnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+         \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{days\PYZus{}since\PYZus{}last\PYZus{}cr\PYZus{}pull}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{df}\PY{p}{[}\PY{n}{vars\PYZus{}to\PYZus{}include}\PY{p}{]}\PY{o}{.}\PY{n}{dtypes}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} addr\_state                   object
+         annual\_inc                  float64
+         delinq\_2yrs                   int64
+         dti                         float64
+         emp\_length                   object
+         funded\_amnt                   int64
+         home\_ownership               object
+         inq\_last\_6mths                int64
+         installment                 float64
+         int\_rate                     object
+         loan\_amnt                     int64
+         open\_acc                      int64
+         pub\_rec                       int64
+         pub\_rec\_bankruptcies        float64
+         purpose                      object
+         revol\_bal                     int64
+         revol\_util                   object
+         sub\_grade                    object
+         term                         object
+         total\_acc                     int64
+         total\_pymnt                 float64
+         total\_rec\_int               float64
+         total\_rec\_late\_fee          float64
+         total\_rec\_prncp             float64
+         verification\_status          object
+         zip\_code                     object
+         days\_since\_first\_cr\_line      int64
+         days\_since\_last\_pymnt       float64
+         days\_since\_last\_cr\_pull     float64
+         dtype: object
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{} convert to proper data types}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{int\PYZus{}rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{int\PYZus{}rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n+nb}{float}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{k}{if} \PY{n}{x} \PY{o+ow}{is} \PY{o+ow}{not} \PY{n}{np}\PY{o}{.}\PY{n}{nan} \PY{k}{else} \PY{n}{x}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revol\PYZus{}util}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revol\PYZus{}util}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n+nb}{float}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PY{k}{if} \PY{n}{x} \PY{o+ow}{is} \PY{o+ow}{not} \PY{n}{np}\PY{o}{.}\PY{n}{nan}
+         \PY{k}{else} \PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+    The following variables are ommitted, because there is no variance in
+the data:
+\texttt{acc\_now\_delinq,\ chargeoff\_within\_12\_mths,\ collections\_12\_mths\_ex\_med,\ delinq\_amnt,\ disbursement\ method,\ hardship\_flag,\ initial\_list\_status,\ out\_prncp,\ out\_prncp\_inv,\ policy\_code,\ pymnt\_plan,\ tax\_liens}.
+
+The following variables are omitted because it is not in the data
+dictionary, and I can't infer what they mean:
+\texttt{collection\_recovery\_fee,\ debt\_settlement\_flag,\ funded\_amnt\_inv,\ total\_pymnt\_inv,\ recoveries}.
+
+\texttt{grade} is fully capture in \texttt{sub\_grade}.
+
+Instead of including,
+\texttt{issue\_d,\ earliest\_cr\_line,\ last\_credit\_pull\_d,\ last\_pymnt\_d},
+I included 3 transformed features:
+\texttt{days\_since\_first\_cr\_line,\ days\_since\_last\_pymnt,\ days\_since\_last\_pymnt}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Regularization is an important step when using an machine learning
+  algorithm, regularzie the variables that you have included. Briefly,
+  why is regularization important?
+\end{enumerate}
+
+    Regularization centers and scales the data. It helps with gradient
+descent convergence as the gradient surface won't be skewed in any
+particular dimension
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{data} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{vars\PYZus{}to\PYZus{}include}\PY{o}{+}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loan\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{vars\PYZus{}to\PYZus{}include}\PY{p}{]}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{StandardScaler}
+         
+         \PY{n}{data} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{vars\PYZus{}to\PYZus{}include}\PY{o}{+}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loan\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         
+         \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{vars\PYZus{}to\PYZus{}include}\PY{p}{]}
+         \PY{n}{y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loan\PYZus{}status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{c+c1}{\PYZsh{} get numeric column types}
+         
+         \PY{n}{numeric\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{n}{k} \PY{k}{for} \PY{n}{k}\PY{p}{,}\PY{n}{v} \PY{o+ow}{in} \PY{n}{X}\PY{o}{.}\PY{n}{dtypes}\PY{o}{.}\PY{n}{to\PYZus{}dict}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{v} \PY{o+ow}{in} \PY{p}{[}\PY{n+nb}{int}\PY{p}{,} \PY{n+nb}{float}\PY{p}{]}\PY{p}{]}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{numeric\PYZus{}cols}\PY{p}{)}
+         \PY{n}{scaler} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{X}\PY{p}{[}\PY{n}{numeric\PYZus{}cols}\PY{p}{]} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{n}{numeric\PYZus{}cols}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['annual\_inc', 'delinq\_2yrs', 'dti', 'funded\_amnt', 'inq\_last\_6mths', 'installment',
+'int\_rate', 'loan\_amnt', 'open\_acc', 'pub\_rec', 'pub\_rec\_bankruptcies', 'revol\_bal',
+'revol\_util', 'total\_acc', 'total\_pymnt', 'total\_rec\_int', 'total\_rec\_late\_fee',
+'total\_rec\_prncp', 'days\_since\_first\_cr\_line', 'days\_since\_last\_pymnt',
+'days\_since\_last\_cr\_pull']
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/parasu/anaconda3/lib/python3.6/site-packages/ipykernel\_launcher.py:14:
+SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row\_indexer,col\_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-
+docs/stable/indexing.html\#indexing-view-versus-copy
+
+/Users/parasu/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py:543:
+SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row\_indexer,col\_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-
+docs/stable/indexing.html\#indexing-view-versus-copy
+  self.obj[item] = s
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Provide a simple correlational table to give you a sense of the
+  relationship between your covariates. Do you notice any interesting
+  patterns?
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+         
+         \PY{n}{cor\PYZus{}table} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{n}{numeric\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{cor\PYZus{}table}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:}                           annual\_inc  delinq\_2yrs       dti  funded\_amnt  \textbackslash{}
+         annual\_inc                  1.000000     0.022445 -0.124681     0.268287   
+         delinq\_2yrs                 0.022445     1.000000 -0.036118    -0.034389   
+         dti                        -0.124681    -0.036118  1.000000     0.065301   
+         funded\_amnt                 0.268287    -0.034389  0.065301     1.000000   
+         inq\_last\_6mths              0.033472     0.007069 -0.000236     0.007624   
+         installment                 0.272153    -0.022195  0.053239     0.955391   
+         int\_rate                    0.052448     0.158380  0.108273     0.313052   
+         loan\_amnt                   0.272296    -0.033730  0.065034     0.981301   
+         open\_acc                    0.157171     0.011986  0.290514     0.172354   
+         pub\_rec                    -0.015147     0.009970 -0.005554    -0.048898   
+         pub\_rec\_bankruptcies       -0.012931     0.004945  0.005774    -0.034133   
+         revol\_bal                   0.279054    -0.056674  0.228631     0.313264   
+         revol\_util                  0.017173    -0.044628  0.276073     0.069696   
+         total\_acc                   0.237203     0.068196  0.229083     0.249831   
+         total\_pymnt                 0.257571    -0.023685  0.064530     0.903647   
+         total\_rec\_int               0.185332     0.022342  0.104411     0.736995   
+         total\_rec\_late\_fee          0.008124     0.033372 -0.010295     0.052480   
+         total\_rec\_prncp             0.259872    -0.039953  0.041901     0.874004   
+         days\_since\_first\_cr\_line    0.180313     0.064830  0.050192     0.193477   
+         days\_since\_last\_pymnt      -0.015844     0.005000 -0.097698    -0.146958   
+         days\_since\_last\_cr\_pull     0.010625    -0.007269 -0.119076    -0.042719   
+         
+                                   inq\_last\_6mths  installment  int\_rate  loan\_amnt  \textbackslash{}
+         annual\_inc                      0.033472     0.272153  0.052448   0.272296   
+         delinq\_2yrs                     0.007069    -0.022195  0.158380  -0.033730   
+         dti                            -0.000236     0.053239  0.108273   0.065034   
+         funded\_amnt                     0.007624     0.955391  0.313052   0.981301   
+         inq\_last\_6mths                  1.000000     0.007526  0.134738   0.007576   
+         installment                     0.007526     1.000000  0.282471   0.929132   
+         int\_rate                        0.134738     0.282471  1.000000   0.309604   
+         loan\_amnt                       0.007576     0.929132  0.309604   1.000000   
+         open\_acc                        0.092757     0.169679  0.013577   0.173914   
+         pub\_rec                         0.024603    -0.043192  0.097092  -0.048105   
+         pub\_rec\_bankruptcies            0.015048    -0.029963  0.082078  -0.032866   
+         revol\_bal                      -0.025706     0.315640  0.100515   0.320136   
+         revol\_util                     -0.068598     0.095136  0.465695   0.065284   
+         total\_acc                       0.113206     0.230644 -0.042612   0.255719   
+         total\_pymnt                    -0.010114     0.854238  0.313651   0.886746   
+         total\_rec\_int                   0.023080     0.632747  0.531746   0.729106   
+         total\_rec\_late\_fee              0.029547     0.059798  0.100839   0.050447   
+         total\_rec\_prncp                -0.023412     0.851132  0.193289   0.855311   
+         days\_since\_first\_cr\_line        0.006994     0.169246 -0.093930   0.199594   
+         days\_since\_last\_pymnt           0.073552    -0.043235 -0.102115  -0.146459   
+         days\_since\_last\_cr\_pull        -0.025196    -0.019885 -0.119939  -0.039591   
+         
+                                   open\_acc   pub\_rec  {\ldots}  revol\_bal  revol\_util  \textbackslash{}
+         annual\_inc                0.157171 -0.015147  {\ldots}   0.279054    0.017173   
+         delinq\_2yrs               0.011986  0.009970  {\ldots}  -0.056674   -0.044628   
+         dti                       0.290514 -0.005554  {\ldots}   0.228631    0.276073   
+         funded\_amnt               0.172354 -0.048898  {\ldots}   0.313264    0.069696   
+         inq\_last\_6mths            0.092757  0.024603  {\ldots}  -0.025706   -0.068598   
+         installment               0.169679 -0.043192  {\ldots}   0.315640    0.095136   
+         int\_rate                  0.013577  0.097092  {\ldots}   0.100515    0.465695   
+         loan\_amnt                 0.173914 -0.048105  {\ldots}   0.320136    0.065284   
+         open\_acc                  1.000000  0.003568  {\ldots}   0.286259   -0.087536   
+         pub\_rec                   0.003568  1.000000  {\ldots}  -0.059926    0.057715   
+         pub\_rec\_bankruptcies      0.009457  0.841247  {\ldots}  -0.047077    0.060246   
+         revol\_bal                 0.286259 -0.059926  {\ldots}   1.000000    0.305062   
+         revol\_util               -0.087536  0.057715  {\ldots}   0.305062    1.000000   
+         total\_acc                 0.684804 -0.020384  {\ldots}   0.312378   -0.068831   
+         total\_pymnt               0.158537 -0.050642  {\ldots}   0.295432    0.080870   
+         total\_rec\_int             0.122305 -0.005121  {\ldots}   0.244697    0.195013   
+         total\_rec\_late\_fee       -0.016989 -0.006129  {\ldots}   0.006222    0.040979   
+         total\_rec\_prncp           0.156791 -0.062609  {\ldots}   0.284513    0.026387   
+         days\_since\_first\_cr\_line  0.208382  0.035276  {\ldots}   0.245795   -0.025639   
+         days\_since\_last\_pymnt    -0.027757  0.013952  {\ldots}  -0.034163   -0.090850   
+         days\_since\_last\_cr\_pull  -0.074567 -0.052309  {\ldots}  -0.045488   -0.145986   
+         
+                                   total\_acc  total\_pymnt  total\_rec\_int  \textbackslash{}
+         annual\_inc                 0.237203     0.257571       0.185332   
+         delinq\_2yrs                0.068196    -0.023685       0.022342   
+         dti                        0.229083     0.064530       0.104411   
+         funded\_amnt                0.249831     0.903647       0.736995   
+         inq\_last\_6mths             0.113206    -0.010114       0.023080   
+         installment                0.230644     0.854238       0.632747   
+         int\_rate                  -0.042612     0.313651       0.531746   
+         loan\_amnt                  0.255719     0.886746       0.729106   
+         open\_acc                   0.684804     0.158537       0.122305   
+         pub\_rec                   -0.020384    -0.050642      -0.005121   
+         pub\_rec\_bankruptcies      -0.007656    -0.039649      -0.000577   
+         revol\_bal                  0.312378     0.295432       0.244697   
+         revol\_util                -0.068831     0.080870       0.195013   
+         total\_acc                  1.000000     0.222062       0.145692   
+         total\_pymnt                0.222062     1.000000       0.836404   
+         total\_rec\_int              0.145692     0.836404       1.000000   
+         total\_rec\_late\_fee        -0.020286     0.021781       0.082799   
+         total\_rec\_prncp            0.228903     0.971794       0.695599   
+         days\_since\_first\_cr\_line   0.358805     0.179525       0.123714   
+         days\_since\_last\_pymnt     -0.003767    -0.317523      -0.474569   
+         days\_since\_last\_cr\_pull   -0.066941    -0.023946      -0.131297   
+         
+                                   total\_rec\_late\_fee  total\_rec\_prncp  \textbackslash{}
+         annual\_inc                          0.008124         0.259872   
+         delinq\_2yrs                         0.033372        -0.039953   
+         dti                                -0.010295         0.041901   
+         funded\_amnt                         0.052480         0.874004   
+         inq\_last\_6mths                      0.029547        -0.023412   
+         installment                         0.059798         0.851132   
+         int\_rate                            0.100839         0.193289   
+         loan\_amnt                           0.050447         0.855311   
+         open\_acc                           -0.016989         0.156791   
+         pub\_rec                            -0.006129        -0.062609   
+         pub\_rec\_bankruptcies               -0.005562        -0.050157   
+         revol\_bal                           0.006222         0.284513   
+         revol\_util                          0.040979         0.026387   
+         total\_acc                          -0.020286         0.228903   
+         total\_pymnt                         0.021781         0.971794   
+         total\_rec\_int                       0.082799         0.695599   
+         total\_rec\_late\_fee                  1.000000        -0.013677   
+         total\_rec\_prncp                    -0.013677         1.000000   
+         days\_since\_first\_cr\_line           -0.010749         0.183498   
+         days\_since\_last\_pymnt               0.008729        -0.237988   
+         days\_since\_last\_cr\_pull            -0.026863         0.023259   
+         
+                                   days\_since\_first\_cr\_line  days\_since\_last\_pymnt  \textbackslash{}
+         annual\_inc                                0.180313              -0.015844   
+         delinq\_2yrs                               0.064830               0.005000   
+         dti                                       0.050192              -0.097698   
+         funded\_amnt                               0.193477              -0.146958   
+         inq\_last\_6mths                            0.006994               0.073552   
+         installment                               0.169246              -0.043235   
+         int\_rate                                 -0.093930              -0.102115   
+         loan\_amnt                                 0.199594              -0.146459   
+         open\_acc                                  0.208382              -0.027757   
+         pub\_rec                                   0.035276               0.013952   
+         pub\_rec\_bankruptcies                      0.044421               0.012104   
+         revol\_bal                                 0.245795              -0.034163   
+         revol\_util                               -0.025639              -0.090850   
+         total\_acc                                 0.358805              -0.003767   
+         total\_pymnt                               0.179525              -0.317523   
+         total\_rec\_int                             0.123714              -0.474569   
+         total\_rec\_late\_fee                       -0.010749               0.008729   
+         total\_rec\_prncp                           0.183498              -0.237988   
+         days\_since\_first\_cr\_line                  1.000000              -0.088809   
+         days\_since\_last\_pymnt                    -0.088809               1.000000   
+         days\_since\_last\_cr\_pull                  -0.024030               0.246529   
+         
+                                   days\_since\_last\_cr\_pull  
+         annual\_inc                               0.010625  
+         delinq\_2yrs                             -0.007269  
+         dti                                     -0.119076  
+         funded\_amnt                             -0.042719  
+         inq\_last\_6mths                          -0.025196  
+         installment                             -0.019885  
+         int\_rate                                -0.119939  
+         loan\_amnt                               -0.039591  
+         open\_acc                                -0.074567  
+         pub\_rec                                 -0.052309  
+         pub\_rec\_bankruptcies                    -0.046864  
+         revol\_bal                               -0.045488  
+         revol\_util                              -0.145986  
+         total\_acc                               -0.066941  
+         total\_pymnt                             -0.023946  
+         total\_rec\_int                           -0.131297  
+         total\_rec\_late\_fee                      -0.026863  
+         total\_rec\_prncp                          0.023259  
+         days\_since\_first\_cr\_line                -0.024030  
+         days\_since\_last\_pymnt                    0.246529  
+         days\_since\_last\_cr\_pull                  1.000000  
+         
+         [21 rows x 21 columns]
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{n}{numeric\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}21}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x12e128898>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{problem_set_6_files/problem_set_6_39_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{X}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}rec\PYZus{}prncp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}pymnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}22}]:}                  total\_rec\_prncp  total\_pymnt
+         total\_rec\_prncp         1.000000     0.971794
+         total\_pymnt             0.971794     1.000000
+\end{Verbatim}
+        
+    There are some almost perfect correlation, for example
+total\_rec\_prncp, which we can take out.
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{X} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}rec\PYZus{}prncp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Split the dataset into a single test and training set, a simple rule
+  of thumb is an 40/60 split. How did you build these two sets?
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+         
+         \PY{c+c1}{\PYZsh{} firt convert categorical cols to dummies}
+         \PY{n}{cat\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{n}{k} \PY{k}{for} \PY{n}{k}\PY{p}{,}\PY{n}{v} \PY{o+ow}{in} \PY{n}{X}\PY{o}{.}\PY{n}{dtypes}\PY{o}{.}\PY{n}{to\PYZus{}dict}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n}{v} \PY{o+ow}{in} \PY{p}{[}\PY{n+nb}{object}\PY{p}{]}\PY{p}{]}
+         \PY{n}{dummy} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{n}{cat\PYZus{}cols}\PY{p}{]}\PY{p}{)}
+         \PY{n}{X} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{X}\PY{p}{,} \PY{n}{dummy}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{X} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{cat\PYZus{}cols}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{X}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}25}]:} (37901, 947)
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Using your training set, run a logistic regression, a random forest,
+  and a gradient boosted random forest. To show your results, present
+  both a measure of miscalssification error, accuracy and a confusion
+  matrix.
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{GradientBoostingClassifier}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{accuracy\PYZus{}score}\PY{p}{,} \PY{n}{confusion\PYZus{}matrix}
+         
+         \PY{n}{rf} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{p}{)}
+         \PY{n}{logit} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}
+         \PY{n}{rfgb} \PY{o}{=} \PY{n}{GradientBoostingClassifier}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/parasu/anaconda3/lib/python3.6/site-
+packages/sklearn/ensemble/weight\_boosting.py:29: DeprecationWarning:
+numpy.core.umath\_tests is an internal NumPy module and should not be imported. It will
+be removed in a future NumPy release.
+  from numpy.core.umath\_tests import inner1d
+
+    \end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{logit}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+         \PY{n}{rf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+         \PY{n}{rfgb}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}28}]:} GradientBoostingClassifier(criterion='friedman\_mse', init=None,
+                       learning\_rate=0.1, loss='deviance', max\_depth=3,
+                       max\_features=None, max\_leaf\_nodes=None,
+                       min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+                       min\_samples\_leaf=1, min\_samples\_split=2,
+                       min\_weight\_fraction\_leaf=0.0, n\_estimators=100,
+                       presort='auto', random\_state=None, subsample=1.0, verbose=0,
+                       warm\_start=False)
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}metrics}\PY{p}{(}\PY{n}{model}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{model}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{accuracy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Confusion matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{for} \PY{n}{m} \PY{o+ow}{in} \PY{p}{(}\PY{n}{rf}\PY{p}{,} \PY{n}{logit}\PY{p}{,} \PY{n}{rfgb}\PY{p}{)}\PY{p}{:}
+             \PY{n}{get\PYZus{}metrics}\PY{p}{(}\PY{n}{m}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+RandomForestClassifier(bootstrap=True, class\_weight=None, criterion='gini',
+            max\_depth=None, max\_features='auto', max\_leaf\_nodes=None,
+            min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+            min\_samples\_leaf=1, min\_samples\_split=2,
+            min\_weight\_fraction\_leaf=0.0, n\_estimators=10, n\_jobs=1,
+            oob\_score=False, random\_state=None, verbose=0,
+            warm\_start=False)
+accuracy
+0.9389881933909373
+Confusion matrix
+[[ 1251   840]
+ [   85 12985]]
+
+
+
+LogisticRegression(C=1.0, class\_weight=None, dual=False, fit\_intercept=True,
+          intercept\_scaling=1, max\_iter=100, multi\_class='ovr', n\_jobs=1,
+          penalty='l2', random\_state=None, solver='liblinear', tol=0.0001,
+          verbose=0, warm\_start=False)
+accuracy
+0.9827847767297672
+Confusion matrix
+[[ 1832   259]
+ [    2 13068]]
+
+
+
+GradientBoostingClassifier(criterion='friedman\_mse', init=None,
+              learning\_rate=0.1, loss='deviance', max\_depth=3,
+              max\_features=None, max\_leaf\_nodes=None,
+              min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+              min\_samples\_leaf=1, min\_samples\_split=2,
+              min\_weight\_fraction\_leaf=0.0, n\_estimators=100,
+              presort='auto', random\_state=None, subsample=1.0, verbose=0,
+              warm\_start=False)
+accuracy
+0.9779038322010422
+Confusion matrix
+[[ 1779   312]
+ [   23 13047]]
+
+
+
+
+    \end{Verbatim}
+
+    The accuracy seems suspiciously high (the baserate for paid off loan is
+86\%). Maybe there's leakage from one of the included variables.
+
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  One easy way to improve model performance is cross-validation. Do a
+  k-fold cross validation, where k=5, using the best performing model
+  from part (e.). Re-report the misclassification error, accuracy and a
+  confusion matrix.
+\end{enumerate}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{cross\PYZus{}validate}\PY{p}{,} \PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{,} \PY{n}{cross\PYZus{}val\PYZus{}predict}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{\PYZsh{} accuracies}
+         \PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{(}\PY{n}{logit}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}32}]:} array([0.98720485, 0.98680913, 0.98562005, 0.98139842, 0.98113208])
+\end{Verbatim}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{cross\PYZus{}val\PYZus{}predict}\PY{p}{(}\PY{n}{logit}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{cv}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} array([[ 4663,   581],
+                [    9, 32648]])
+\end{Verbatim}
+        
+
+    % Add a bibliography block to the postdoc
+    
+    
+\bibliography{references}
+
+    
+    \end{document}
